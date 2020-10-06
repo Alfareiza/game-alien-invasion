@@ -7,8 +7,8 @@ class Ship():
         self.ai_settings = ai_settings
         # Load the img of spaceship and get his rectangle
         self.image = pygame.image.load('img/spaceship1.png')
-        self.rect = self.image.get_rect()
-        self.screen_rect = screen.get_rect()
+        self.rect = self.image.get_rect()  # Rect of the image
+        self.screen_rect = screen.get_rect()  # Rect of the screen
 
         # Starts every new spaceship in the inferior central part of the screen
         self.rect.centerx = self.screen_rect.centerx
@@ -27,9 +27,10 @@ class Ship():
 
     def update(self):
         """Updates the spaceship's position according to the motion flag."""
-        if self.moving_right:
+        # Update center's value of the spaceship but not the rectangle
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.center += self.ai_settings.ship_speed
-        if self.moving_left:
+        if self.moving_left and self.rect.left > 0:
             self.center -= self.ai_settings.ship_speed
 
         # Update the object rect according to the self.center
