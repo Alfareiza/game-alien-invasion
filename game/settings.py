@@ -8,3 +8,6 @@ class Settings():
         self.screen_height = 600
         self.bg_color = (230, 230, 230)
         self.bg_image = pygame.image.load('img/bg.png')
+
+        # Settings of spaceship
+        self.ship_speed = 3.5
