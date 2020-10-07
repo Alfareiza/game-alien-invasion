@@ -2,6 +2,7 @@ import pygame
 from pygame.sprite import Group
 
 from game import game_functions
+from game.alien import Alien
 from game.settings import Settings
 from game.ship import Ship
 
@@ -20,6 +21,9 @@ def run_game():
     # Create a spaceship
     ship = Ship(ai_settings, screen)
 
+    # Create a Alien
+    alien = Alien(ai_settings, screen)
+
     # Create a group in which the projectiles will be stored
     bullets = Group()
 
@@ -28,7 +32,7 @@ def run_game():
         game_functions.check_events(ai_settings, screen, ship, bullets)
         ship.update()
         game_functions.update_bullets(bullets)
-        game_functions.update_screen(ai_settings, screen, ship, bullets)
+        game_functions.update_screen(ai_settings, screen, ship, alien, bullets)
 
 
 run_game()
