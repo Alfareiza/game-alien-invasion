@@ -24,9 +24,17 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
         # Move the spaceship to the left
         ship.moving_left = True
     elif event.key == pygame.K_SPACE:
-        if len(bullets) < ai_settings.bullets_allowed:
-            new_bullet = Bullet(ai_settings, screen, ship)
-            bullets.add(new_bullet)
+        fire_bullet(ai_settings, bullets, screen, ship)
+    elif event.key == pygame.K_q:
+        sys.exit()
+
+
+def fire_bullet(ai_settings, bullets, screen, ship):
+    """Shoot a target if the limit has not yet been reached"""
+    # Create a new projectile and add to the projectile group
+    if len(bullets) < ai_settings.bullets_allowed:
+        new_bullet = Bullet(ai_settings, screen, ship)
+        bullets.add(new_bullet)
 
 
 def check_events(ai_settings, screen, ship, bullets):
@@ -42,7 +50,7 @@ def check_events(ai_settings, screen, ship, bullets):
             check_keyup_events(event, ship)
 
 
-def update_screen(ai_settings, screen, ship, bullets):
+def update_screen(ai_settings, screen, ship, alien, bullets):
     """Updates the images on the screen and switches to the new screen"""
     # Redesign the screen and each passage through the while
     # screen.fill(ai_settings.bg_color)
@@ -52,6 +60,7 @@ def update_screen(ai_settings, screen, ship, bullets):
         bullet.draw_bullet()
 
     ship.blitme()
+    alien.blitme()
 
     pygame.display.flip()  # Leave the most recent screen visible
 
