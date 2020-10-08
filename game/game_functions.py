@@ -4,6 +4,7 @@ This module will store some functions that will make the game works
 import sys
 import pygame
 
+from game.alien import Alien
 from game.bullet import Bullet
 
 
@@ -50,7 +51,7 @@ def check_events(ai_settings, screen, ship, bullets):
             check_keyup_events(event, ship)
 
 
-def update_screen(ai_settings, screen, ship, alien, bullets):
+def update_screen(ai_settings, screen, ship, aliens, bullets):
     """Updates the images on the screen and switches to the new screen"""
     # Redesign the screen and each passage through the while
     # screen.fill(ai_settings.bg_color)
@@ -60,7 +61,7 @@ def update_screen(ai_settings, screen, ship, alien, bullets):
         bullet.draw_bullet()
 
     ship.blitme()
-    alien.blitme()
+    aliens.draw(screen)
 
     pygame.display.flip()  # Leave the most recent screen visible
 
@@ -72,3 +73,31 @@ def update_bullets(bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
     # print(len(bullets))
+
+
+def create_fleet(ai_settings, screen, aliens):
+    """Create a complete fleet of aliens"""
+    # Creating an alien y calculates the number of aliens in a row
+    # The spacing between the aliens is equal to the width of an alien
+    alien = Alien(ai_settings, screen)
+    numbers_aliens_x = get_numbers_aliens_x(ai_settings, alien.rect.width)
+
+    # Creates the first line of aliens
+    for alien_number in range(numbers_aliens_x):
+        create_alien(ai_settings, alien_number, aliens, screen)
+
+
+def create_alien(ai_settings, alien_number, aliens, screen):
+    """Creates an alien and places it on the line"""
+    alien = Alien(ai_settings, screen)
+    alien_width = alien.rect.width
+    alien.x = alien_width + 2 * alien_width * alien_number
+    alien.rect.x = alien.x
+    aliens.add(alien)
+
+
+def get_numbers_aliens_x(ai_settings, alien_width):
+    """Determines the number of aliens that fit in a row"""
+    avaliable_space_x = ai_settings.screen_width - 2 * alien_width
+    numbers_aliens_x = int(avaliable_space_x / (2 * alien_width))
+    return numbers_aliens_x
