@@ -20,19 +20,19 @@ def run_game():
 
     # Create a spaceship
     ship = Ship(ai_settings, screen)
-
-    # Create a Alien
-    alien = Alien(ai_settings, screen)
-
     # Create a group in which the projectiles will be stored
     bullets = Group()
+    # Create a group of Aliens
+    aliens = Group()
+
+    game_functions.create_fleet(ai_settings, screen, aliens)
 
     # Starts main loop of the game
     while True:
         game_functions.check_events(ai_settings, screen, ship, bullets)
         ship.update()
         game_functions.update_bullets(bullets)
-        game_functions.update_screen(ai_settings, screen, ship, alien, bullets)
+        game_functions.update_screen(ai_settings, screen, ship, aliens, bullets)
 
 
 run_game()
