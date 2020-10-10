@@ -101,3 +101,25 @@ def get_numbers_aliens_x(ai_settings, alien_width):
     avaliable_space_x = ai_settings.screen_width - 2 * alien_width
     numbers_aliens_x = int(avaliable_space_x / (2 * alien_width))
     return numbers_aliens_x
+
+
+def change_fleet_direction(ai_settings, aliens):
+    """Make all the fleet down and move the direction"""
+    for alien in aliens.sprites():
+        alien.rect.y += ai_settings.fleet_drop_speed
+    ai_settings.fleet_direction *= -1
+
+
+def check_fleet_edges(ai_settings, aliens):
+    """Respond appropriately if some alien reaches the edge"""
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(ai_settings, aliens)
+            break
+
+
+def update_aliens(ai_settings, aliens):
+    """Verify if the fleet is on the limit of the screen, then
+    Update the positions of all aliens of the fleet"""
+    check_fleet_edges(ai_settings, aliens)
+    aliens.update()
