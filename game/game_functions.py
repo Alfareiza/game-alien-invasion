@@ -40,11 +40,34 @@ def fire_bullet(ai_settings, bullets, screen, ship):
         bullets.add(new_bullet)
 
 
-def check_events(ai_settings, screen, ship, bullets):
+def check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y):
+    """Start a new game when the player clicks play"""
+    button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_clicked and not stats.game_active:
+        # Hide the cursor
+        pygame.mouse.set_visible(False)
+
+        # Reset game statistics
+        stats.reset_stats()
+        stats.game_active = True
+
+        # Empty the list of aliens and projectiles
+        aliens.empty()
+        bullets.empty()
+
+        # Create a new fleet and centralize the spacecraft
+        create_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship
+
+
+def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets):
     """Response to key and mouse press events"""
     for event in pygame.event.get():  # Observes keyboard and mouse events
         if event.type == pygame.QUIT:
             sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y)
 
         elif event.type == pygame.KEYDOWN:
             check_keydown_events(event, ai_settings, screen, ship, bullets)
@@ -152,7 +175,7 @@ def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
 
 def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
     """Responds to the fact that the spaceship was hit by an alien."""
-    if stats.ships_left >0 :
+    if stats.ships_left > 0:
         # Decrementa a ships_left
         stats.ships_left -= 1
 
@@ -168,6 +191,8 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         sleep(0.7)
     else:
         stats.game_active = False
+        pygame.mouse.set_visible(True)
+
 
 def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
     """Verifica se algum alienígena alcançou a parte inferior da tela"""
@@ -177,4 +202,3 @@ def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
             # Trata esse caso do mesmo modo que e feito quando a espaçonave e atingida
             ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
             break
-
