@@ -66,7 +66,7 @@ def update_screen(ai_settings, screen, ship, aliens, bullets):
     pygame.display.flip()  # Leave the most recent screen visible
 
 
-def update_bullets(aliens, bullets):
+def update_bullets(ai_settings, screen, ship, aliens, bullets):
     """Update the position of projetiles and get rid of two old projectiles"""
     bullets.update()
     # Eliminate the projectiles out of the screen
@@ -74,11 +74,16 @@ def update_bullets(aliens, bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
     # print(len(bullets))
-    # Verifica se algum projétil antingiu os alienígenas
-    # Em caso afirmativo, livra-se do projétil e do alienigena
+    # Checks if any projectiles hit the aliens
+    # If so, get rid of the projectile and the alien
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
 
-def create_fleet(ai_settings, screen, aliens):
+    if len(aliens) == 0:
+        # Destroy existing projectiles and create a new fleet
+        bullets.empty()
+        create_fleet(ai_settings, screen, ship, aliens)
+
+def create_fleet(ai_settings, screen, ship, aliens):
     """Create a complete fleet of aliens"""
     # Creating an alien y calculates the number of aliens in a row
     # The spacing between the aliens is equal to the width of an alien
