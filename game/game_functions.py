@@ -131,8 +131,12 @@ def check_fleet_edges(ai_settings, aliens):
             break
 
 
-def update_aliens(ai_settings, aliens):
+def update_aliens(ai_settings, ship, aliens):
     """Verify if the fleet is on the limit of the screen, then
     Update the positions of all aliens of the fleet"""
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
+
+    # Verifica se houve colisões entre alienígenas e a espaçonave
+    if pygame.sprite.spritecollideany(ship, aliens):
+        print("Ship hit!!")
