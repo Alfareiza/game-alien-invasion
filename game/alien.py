@@ -27,3 +27,17 @@ class Alien(Sprite):
         """Design a spaceship in his current position"""
         self.screen.blit(self.image, self.rect)
 
+    def update(self):
+        """Move the alien to the right or left"""
+        self.x += self.ai_settings.alien_speed * self.ai_settings.fleet_direction
+        self.rect.x = self.x
+
+    def check_edges(self):
+        """Return True if the alien is in the limit of the screen"""
+        screen_rect = self.screen.get_rect()
+        if self.rect.right >= screen_rect.right:
+            return True
+        elif self.rect.left <= 0:
+            return True
+
+
