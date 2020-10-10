@@ -35,3 +35,7 @@ class Ship():
 
         # Update the object rect according to the self.center
         self.rect.centerx = self.center
+
+    def center_ship(self):
+        """Center the spacehip in the screen"""
+        self.center = self.screen_rect.centerx
