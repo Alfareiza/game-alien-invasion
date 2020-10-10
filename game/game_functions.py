@@ -2,6 +2,8 @@
 This module will store some functions that will make the game works
 """
 import sys
+from time import sleep
+
 import pygame
 
 from game.alien import Alien
@@ -131,7 +133,7 @@ def check_fleet_edges(ai_settings, aliens):
             break
 
 
-def update_aliens(ai_settings, ship, aliens):
+def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     """Verify if the fleet is on the limit of the screen, then
     Update the positions of all aliens of the fleet"""
     check_fleet_edges(ai_settings, aliens)
@@ -139,4 +141,36 @@ def update_aliens(ai_settings, ship, aliens):
 
     # Verifica se houve colisões entre alienígenas e a espaçonave
     if pygame.sprite.spritecollideany(ship, aliens):
-        print("Ship hit!!")
+        ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+
+    check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
+
+
+def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+    """Responds to the fact that the spaceship was hit by an alien."""
+    if stats.ships_left >0 :
+        # Decrementa a ships_left
+        stats.ships_left -= 1
+
+        # Empty the list of aliens and projectiles
+        aliens.empty()
+        bullets.empty()
+
+        # Create a new fleet and centralize the spacecraft
+        create_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship()
+
+        # Faz uma pause
+        sleep(0.7)
+    else:
+        stats.game_active = False
+
+def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+    """Verifica se algum alienígena alcançou a parte inferior da tela"""
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            # Trata esse caso do mesmo modo que e feito quando a espaçonave e atingida
+            ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+            break
+
