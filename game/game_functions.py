@@ -79,7 +79,7 @@ def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets)
             check_keyup_events(event, ship)
 
 
-def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button):
+def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button):
     """Updates the images on the screen and switches to the new screen"""
     # Redesign the screen and each passage through the while
     # screen.fill(ai_settings.bg_color)
@@ -90,6 +90,9 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button
 
     ship.blitme()
     aliens.draw(screen)
+
+    # Draws information about puntuation
+    sb.show_score()
 
     # Draws the Play button if the game is inactive
     if not stats.game_active:
