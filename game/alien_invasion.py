@@ -5,6 +5,7 @@ from game import game_functions
 from game.alien import Alien
 from game.button import Button
 from game.game_stats import GameStats
+from game.scoreboard import Scoreboard
 from game.settings import Settings
 from game.ship import Ship
 
@@ -26,6 +27,9 @@ def run_game():
     # Create an instance to save statistical data from the game
     stats = GameStats(ai_settings)
 
+    # Cria instância para armazenar estatísicas do jogo e cria painel de pontuação
+    sb = Scoreboard(ai_settings, screen, stats)
+
     # Create a spaceship
     ship = Ship(ai_settings, screen)
 
@@ -44,7 +48,7 @@ def run_game():
             ship.update()
             game_functions.update_bullets(ai_settings, screen, ship, aliens, bullets)
             game_functions.update_aliens(ai_settings, stats, screen, ship, aliens, bullets)
-        game_functions.update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button)
+        game_functions.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button)
 
 
 run_game()
