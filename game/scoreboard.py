@@ -15,12 +15,14 @@ class Scoreboard():
         self.text_color = (255, 237, 0)
         self.font = pygame.font.SysFont(None, 48)
 
-        # para a imagem da pontuaçao inicial
+        # prepares the image of the initial score
         self.prep_score()
+        self.prep_high_score()
 
     def prep_score(self):
         """Transforma a pontuação em uma imagem renderizada"""
-        score_str = str(self.stats.score)
+        rounded_score = round(self.stats.score, -1)
+        score_str = "{:,}".format(rounded_score)
         self.score_image = self.font.render(score_str, True, self.text_color)
 
         # Exibe a pontuação na parte superior direita da tela
@@ -31,3 +33,6 @@ class Scoreboard():
     def show_score(self):
         """Desenha a pontuação na tela"""
         self.screen.blit(self.score_image, self.score_rect)
+
+    def prep_high_score(self):
+        pass

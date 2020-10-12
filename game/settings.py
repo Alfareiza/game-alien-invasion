@@ -24,9 +24,12 @@ class Settings():
         # self.alien_speed = 3
         self.fleet_drop_speed = 10
 
-        # A taxa com que a velocidade do jogo aumenta
+        # The rate at which the game speed increases
         self.speedup_scale = 2.1
         self.initialize_dynamic_settings()
+
+        # The rate at which points for each alien increase
+        self.score_scale = 1.5
 
         # Puntuation
         self.alien_points = 50
@@ -41,8 +44,11 @@ class Settings():
         self.fleet_direction = 1
 
     def increase_speed(self):
-        """Increase speed settings"""
+        """Increase speed settings and the points for every alien killed"""
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
+
+        self.alien_points = int(self.alien_points * self.score_scale)
+        print(self.alien_points)
 
