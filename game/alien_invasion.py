@@ -27,7 +27,7 @@ def run_game():
     # Create an instance to save statistical data from the game
     stats = GameStats(ai_settings)
 
-    # Cria instância para armazenar estatísicas do jogo e cria painel de pontuação
+    # Create instance to store game statistics and create scoreboard
     sb = Scoreboard(ai_settings, screen, stats)
 
     # Create a spaceship
@@ -43,7 +43,7 @@ def run_game():
 
     # Starts main loop of the game
     while True:
-        game_functions.check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets)
+        game_functions.check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets)
         if stats.game_active:
             ship.update()
             game_functions.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets)
